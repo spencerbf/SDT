@@ -11,6 +11,7 @@ import Paper from "@material-ui/core/Paper";
 import content from "./candidateData.json";
 import { Button } from "@material-ui/core";
 import CVModal from "../CVModal/cvModal";
+
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -79,9 +80,11 @@ export const EnhancedTable = () => {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("name");
   const [candidates, setCandidates] = useState([]);
+  const [selectedCandidate, setSelectedCandidate] = useState({});
   const [open, setOpen] = React.useState(false);
 
-  const handleOpen = () => {
+  const handleOpen = row => {
+    setSelectedCandidate(row);
     setOpen(true);
   };
 
@@ -98,7 +101,8 @@ export const EnhancedTable = () => {
     real_name,
     years_as_sw_dev,
     favourite_language,
-    australian_citizen
+    australian_citizen,
+    resume_base64
   }) => {
     const isAustralianCitizen = australian_citizen ? "YES" : "NO";
     return {
@@ -106,12 +110,12 @@ export const EnhancedTable = () => {
       real_name,
       years_as_sw_dev,
       favourite_language,
-      isAustralianCitizen
+      isAustralianCitizen,
+      resume_base64
     };
   };
 
   const rows = candidates.map(candidate => {
-    console.log(createData(candidate));
     return createData(candidate);
   });
 
@@ -159,7 +163,7 @@ export const EnhancedTable = () => {
                     <TableCell>{row.favourite_language}</TableCell>
                     <TableCell>{row.isAustralianCitizen}</TableCell>
                     <TableCell>
-                      <Button onClick={handleOpen}>CV</Button>
+                      <Button onClick={() => handleOpen(row)}>CV</Button>
                     </TableCell>
                   </TableRow>
                 );
@@ -168,7 +172,11 @@ export const EnhancedTable = () => {
           </Table>
         </TableContainer>
       </Paper>
-      <CVModal handleClose={handleClose} open={open} />
+      <CVModal
+        handleClose={handleClose}
+        open={open}
+        selectedCandidate={selectedCandidate}
+      />
     </div>
   );
 };
