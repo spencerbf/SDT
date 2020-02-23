@@ -9,17 +9,8 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import content from "./candidateData.json";
-
-function createData(name, exp, favLang, ausCit, protein) {
-  return { name, exp, favLang, ausCit, protein };
-}
-
-const rows = [
-  createData("Dave", "3", "ruby", "yes", "cat"),
-  createData("Jeff", "5", "js", "no", "dog"),
-  createData("George", "7", "python", "yes", "mouse")
-];
-
+import { Button } from "@material-ui/core";
+import CVModal from "../CVModal/cvModal";
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -47,6 +38,7 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
+  { id: "starCV", numeric: false, disablePadding: false, label: "Star CV" },
   {
     id: "name",
     numeric: false,
@@ -66,7 +58,7 @@ const headCells = [
     disablePadding: false,
     label: "Australian Citizen"
   },
-  { id: "protein", numeric: false, disablePadding: false, label: "Protein (g)" }
+  { id: "showCv", numeric: false, disablePadding: false, label: "Show CV" }
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -87,10 +79,41 @@ export const EnhancedTable = () => {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("name");
   const [candidates, setCandidates] = useState([]);
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     setCandidates(content);
   }, []);
+
+  const createData = ({
+    id,
+    real_name,
+    years_as_sw_dev,
+    favourite_language,
+    australian_citizen
+  }) => {
+    const isAustralianCitizen = australian_citizen ? "YES" : "NO";
+    return {
+      id,
+      real_name,
+      years_as_sw_dev,
+      favourite_language,
+      isAustralianCitizen
+    };
+  };
+
+  const rows = candidates.map(candidate => {
+    console.log(createData(candidate));
+    return createData(candidate);
+  });
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -127,14 +150,17 @@ export const EnhancedTable = () => {
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy)).map(row => {
                 return (
-                  <TableRow hover tabIndex={-1} key={row.name}>
+                  <TableRow hover tabIndex={-1} key={row.id}>
+                    <TableCell>Star</TableCell>
                     <TableCell scope="row" padding="none">
-                      {row.name}
+                      {row.real_name}
                     </TableCell>
-                    <TableCell>{row.exp}</TableCell>
-                    <TableCell>{row.favLang}</TableCell>
-                    <TableCell>{row.ausCit}</TableCell>
-                    <TableCell>{row.protein}</TableCell>
+                    <TableCell>{row.years_as_sw_dev}</TableCell>
+                    <TableCell>{row.favourite_language}</TableCell>
+                    <TableCell>{row.isAustralianCitizen}</TableCell>
+                    <TableCell>
+                      <Button onClick={handleOpen}>CV</Button>
+                    </TableCell>
                   </TableRow>
                 );
               })}
@@ -142,6 +168,7 @@ export const EnhancedTable = () => {
           </Table>
         </TableContainer>
       </Paper>
+      <CVModal handleClose={handleClose} open={open} />
     </div>
   );
 };
