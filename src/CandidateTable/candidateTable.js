@@ -8,7 +8,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
-import axios from "axios";
+import content from "./candidateData.json";
 
 function createData(name, exp, favLang, ausCit, protein) {
   return { name, exp, favLang, ausCit, protein };
@@ -53,7 +53,7 @@ const headCells = [
     disablePadding: true,
     label: "Full Name"
   },
-  { id: "exp", numeric: true, disablePadding: false, label: "exp" },
+  { id: "exp", numeric: false, disablePadding: false, label: "exp" },
   {
     id: "favLang",
     numeric: false,
@@ -89,14 +89,8 @@ export const EnhancedTable = () => {
   const [candidates, setCandidates] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios("./candidateData.json");
-      setCandidates(result.data);
-    };
-    fetchData();
+    setCandidates(content);
   }, []);
-
-  console.log(candidates);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
