@@ -46,7 +46,7 @@ const headCells = [
     disablePadding: true,
     label: "Full Name"
   },
-  { id: "exp", numeric: false, disablePadding: false, label: "exp" },
+  { id: "exp", numeric: true, disablePadding: false, label: "exp" },
   {
     id: "favLang",
     numeric: false,
@@ -72,6 +72,9 @@ const useStyles = makeStyles(theme => ({
   },
   table: {
     minWidth: 750
+  },
+  starButton: {
+    color: "blue"
   }
 }));
 
@@ -81,7 +84,8 @@ export const EnhancedTable = () => {
   const [orderBy, setOrderBy] = useState("name");
   const [candidates, setCandidates] = useState([]);
   const [selectedCandidate, setSelectedCandidate] = useState({});
-  const [open, setOpen] = React.useState(false);
+  const [starCandidate, setStarCandidate] = useState([]);
+  const [open, setOpen] = useState(false);
 
   const handleOpen = row => {
     setSelectedCandidate(row);
@@ -115,6 +119,15 @@ export const EnhancedTable = () => {
     };
   };
 
+  const starredCandidate = id => {
+    console.log();
+    if (starCandidate.includes(id)) {
+      setStarCandidate(starCandidate.filter(e => e !== id));
+    } else {
+      setStarCandidate(starCandidate.concat(id));
+    }
+  };
+
   const rows = candidates.map(candidate => {
     return createData(candidate);
   });
@@ -128,6 +141,8 @@ export const EnhancedTable = () => {
   const createSortHandler = property => event => {
     handleRequestSort(event, property);
   };
+
+  console.log(starCandidate);
 
   return (
     <div className={classes.root}>
@@ -155,7 +170,18 @@ export const EnhancedTable = () => {
               {stableSort(rows, getComparator(order, orderBy)).map(row => {
                 return (
                   <TableRow hover tabIndex={-1} key={row.id}>
-                    <TableCell>Star</TableCell>
+                    <TableCell>
+                      <Button
+                        className={
+                          starCandidate.includes(row.id)
+                            ? classes.starButton
+                            : ""
+                        }
+                        onClick={() => starredCandidate(row.id)}
+                      >
+                        Star Candidate
+                      </Button>
+                    </TableCell>
                     <TableCell scope="row" padding="none">
                       {row.real_name}
                     </TableCell>
