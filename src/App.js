@@ -1,10 +1,11 @@
 import React from "react";
-import "./App.css";
+import useStyles from "./App.styles";
 import EnhancedTable from "./CandidateTable/candidateTable";
 
 function App() {
+  const classes = useStyles();
   return (
-    <div className="App">
+    <div className={classes.app}>
       <EnhancedTable />
     </div>
   );

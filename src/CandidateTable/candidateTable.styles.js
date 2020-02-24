@@ -20,7 +20,8 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     fontSize: 12,
-    border: "solid 1px"
+    border: "solid 1px",
+    textTransform: "capitalize"
   }
 }));
 

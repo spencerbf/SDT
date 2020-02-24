@@ -91,29 +91,33 @@ export const EnhancedTable = () => {
                 rows,
                 CandidateTableHelpers.getComparator(order, orderBy)
               ).map(row => {
+                const {
+                  id,
+                  years_as_sw_dev,
+                  favourite_language,
+                  isAustralianCitizen,
+                  real_name
+                } = row;
                 return (
-                  <TableRow hover tabIndex={-1} key={row.id}>
+                  <TableRow hover tabIndex={-1} key={id}>
                     <TableCell>
                       <Button
                         className={
-                          starCandidate.includes(row.id)
-                            ? classes.starButton
-                            : ""
+                          starCandidate.includes(id) ? classes.starButton : ""
                         }
-                        onClick={() => starredCandidate(row.id)}
+                        onClick={() => starredCandidate(id)}
                       >
                         <StarBorderIcon />
                       </Button>
                     </TableCell>
                     <TableCell scope="row" padding="none">
-                      {row.real_name}
+                      {real_name}
                     </TableCell>
-                    <TableCell>{row.years_as_sw_dev}</TableCell>
-                    <TableCell>{row.favourite_language}</TableCell>
-                    <TableCell>{row.isAustralianCitizen}</TableCell>
+                    <TableCell>{years_as_sw_dev}</TableCell>
+                    <TableCell>{favourite_language}</TableCell>
+                    <TableCell>{isAustralianCitizen}</TableCell>
                     <TableCell>
                       <Button
-                        outlined="outlined"
                         onClick={() => handleOpen(row)}
                         className={classes.button}
                       >
