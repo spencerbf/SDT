@@ -27,43 +27,37 @@ const CandidateTableHelpers = {
     {
       id: "starCV",
       numeric: false,
-      disablePadding: false,
       label: "Star CV",
       sortable: false
     },
     {
       id: "real_name",
       numeric: false,
-      disablePadding: true,
       label: "Full Name",
       sortable: true
     },
     {
       id: "years_as_sw_dev",
       numeric: true,
-      disablePadding: false,
-      label: "exp",
+      label: "Experience",
       sortable: true
     },
     {
       id: "favourite_language",
       numeric: false,
-      disablePadding: false,
       label: "Fav Language",
       sortable: true
     },
     {
       id: "isAustralianCitizen",
       numeric: false,
-      disablePadding: false,
       label: "Australian Citizen",
       sortable: true
     },
     {
       id: "showCv",
       numeric: false,
-      disablePadding: false,
-      label: "Show CV",
+      label: "Show Resume",
       sortable: false
     }
   ],

@@ -7,11 +7,14 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
+import StarBorderIcon from "@material-ui/icons/StarBorder";
 import { Button } from "@material-ui/core";
 import content from "../Data/candidateData.json";
 import useStyles from "./candidateTable.styles";
 import CVModal from "../CVModal/cvModal";
 import CandidateTableHelpers from "./helpers/candidateTableHelpers";
+
+const SHOW_RESUME = "Show Resume";
 
 export const EnhancedTable = () => {
   const classes = useStyles();
@@ -56,13 +59,13 @@ export const EnhancedTable = () => {
   const createSortHandler = property => event => {
     handleRequestSort(event, property);
   };
-  console.log(starCandidate);
+
   return (
     <div className={classes.root}>
       <Paper>
         <TableContainer>
           <Table className={classes.table}>
-            <TableHead>
+            <TableHead className={classes.tableHeader}>
               <TableRow>
                 {CandidateTableHelpers.headCells.map(headCell =>
                   headCell.sortable ? (
@@ -99,7 +102,7 @@ export const EnhancedTable = () => {
                         }
                         onClick={() => starredCandidate(row.id)}
                       >
-                        Star Candidate
+                        <StarBorderIcon />
                       </Button>
                     </TableCell>
                     <TableCell scope="row" padding="none">
@@ -109,7 +112,13 @@ export const EnhancedTable = () => {
                     <TableCell>{row.favourite_language}</TableCell>
                     <TableCell>{row.isAustralianCitizen}</TableCell>
                     <TableCell>
-                      <Button onClick={() => handleOpen(row)}>CV</Button>
+                      <Button
+                        outlined="outlined"
+                        onClick={() => handleOpen(row)}
+                        className={classes.button}
+                      >
+                        {SHOW_RESUME}
+                      </Button>
                     </TableCell>
                   </TableRow>
                 );

@@ -2,17 +2,25 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "100%"
+    width: "100%",
+    color: "pink"
   },
   paper: {
     width: "100%",
     marginBottom: theme.spacing(2)
   },
   table: {
-    minWidth: 750
+    minWidth: 550
   },
   starButton: {
-    color: "blue"
+    color: "red"
+  },
+  tableHeader: {
+    background: "lightBlue"
+  },
+  button: {
+    fontSize: 12,
+    border: "solid 1px"
   }
 }));
 

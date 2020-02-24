@@ -5,11 +5,7 @@ import EnhancedTable from "./CandidateTable/candidateTable";
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <div>
-          <EnhancedTable />
-        </div>
-      </header>
+      <EnhancedTable />
     </div>
   );
 }
