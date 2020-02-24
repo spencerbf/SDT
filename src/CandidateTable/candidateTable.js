@@ -39,27 +39,48 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: "starCV", numeric: false, disablePadding: false, label: "Star CV" },
   {
-    id: "name",
+    id: "starCV",
+    numeric: false,
+    disablePadding: false,
+    label: "Star CV",
+    sortable: false
+  },
+  {
+    id: "real_name",
     numeric: false,
     disablePadding: true,
-    label: "Full Name"
-  },
-  { id: "exp", numeric: true, disablePadding: false, label: "exp" },
-  {
-    id: "favLang",
-    numeric: false,
-    disablePadding: false,
-    label: "Fav Language"
+    label: "Full Name",
+    sortable: true
   },
   {
-    id: "ausCit",
+    id: "years_as_sw_dev",
+    numeric: true,
+    disablePadding: false,
+    label: "exp",
+    sortable: true
+  },
+  {
+    id: "favourite_language",
     numeric: false,
     disablePadding: false,
-    label: "Australian Citizen"
+    label: "Fav Language",
+    sortable: true
   },
-  { id: "showCv", numeric: false, disablePadding: false, label: "Show CV" }
+  {
+    id: "isAustralianCitizen",
+    numeric: false,
+    disablePadding: false,
+    label: "Australian Citizen",
+    sortable: true
+  },
+  {
+    id: "showCv",
+    numeric: false,
+    disablePadding: false,
+    label: "Show CV",
+    sortable: false
+  }
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -108,7 +129,7 @@ export const EnhancedTable = () => {
     australian_citizen,
     resume_base64
   }) => {
-    const isAustralianCitizen = australian_citizen ? "YES" : "NO";
+    const isAustralianCitizen = australian_citizen ? "yes" : "no";
     return {
       id,
       real_name,
@@ -120,7 +141,6 @@ export const EnhancedTable = () => {
   };
 
   const starredCandidate = id => {
-    console.log();
     if (starCandidate.includes(id)) {
       setStarCandidate(starCandidate.filter(e => e !== id));
     } else {
@@ -142,8 +162,6 @@ export const EnhancedTable = () => {
     handleRequestSort(event, property);
   };
 
-  console.log(starCandidate);
-
   return (
     <div className={classes.root}>
       <Paper>
@@ -151,19 +169,23 @@ export const EnhancedTable = () => {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                {headCells.map(headCell => (
-                  <TableCell
-                    key={headCell.id}
-                    sortDirection={orderBy === headCell.id ? order : false}
-                  >
-                    <TableSortLabel
-                      direction={orderBy === headCell.id ? order : "asc"}
-                      onClick={createSortHandler(headCell.id)}
+                {headCells.map(headCell =>
+                  headCell.sortable ? (
+                    <TableCell
+                      key={headCell.id}
+                      sortDirection={orderBy === headCell.id ? order : false}
                     >
-                      {headCell.label}
-                    </TableSortLabel>
-                  </TableCell>
-                ))}
+                      <TableSortLabel
+                        direction={orderBy === headCell.id ? order : "asc"}
+                        onClick={createSortHandler(headCell.id)}
+                      >
+                        {headCell.label}
+                      </TableSortLabel>
+                    </TableCell>
+                  ) : (
+                    <TableCell>{headCell.label}</TableCell>
+                  )
+                )}
               </TableRow>
             </TableHead>
             <TableBody>

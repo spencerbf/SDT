@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import atob from "atob";
+import ReactMarkdown from "react-markdown";
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -50,7 +51,7 @@ export const CVModal = props => {
       <Modal open={open} onClose={handleClose}>
         <div style={modalStyle} className={classes.paper}>
           <h2 id="simple-modal-title">Text in a modal</h2>
-          <p id="simple-modal-description">{candidateCV}</p>
+          <ReactMarkdown source={candidateCV} />
         </div>
       </Modal>
     </div>
