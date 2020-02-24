@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -8,96 +7,11 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
-import content from "../Data/candidateData.json";
 import { Button } from "@material-ui/core";
+import content from "../Data/candidateData.json";
+import useStyles from "./candidateTable.styles";
 import CVModal from "../CVModal/cvModal";
-
-const descendingComparator = (a, b, orderBy) => {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-};
-
-const getComparator = (order, orderBy) => {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-};
-
-const stableSort = (array, comparator) => {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map(el => el[0]);
-};
-
-const headCells = [
-  {
-    id: "starCV",
-    numeric: false,
-    disablePadding: false,
-    label: "Star CV",
-    sortable: false
-  },
-  {
-    id: "real_name",
-    numeric: false,
-    disablePadding: true,
-    label: "Full Name",
-    sortable: true
-  },
-  {
-    id: "years_as_sw_dev",
-    numeric: true,
-    disablePadding: false,
-    label: "exp",
-    sortable: true
-  },
-  {
-    id: "favourite_language",
-    numeric: false,
-    disablePadding: false,
-    label: "Fav Language",
-    sortable: true
-  },
-  {
-    id: "isAustralianCitizen",
-    numeric: false,
-    disablePadding: false,
-    label: "Australian Citizen",
-    sortable: true
-  },
-  {
-    id: "showCv",
-    numeric: false,
-    disablePadding: false,
-    label: "Show CV",
-    sortable: false
-  }
-];
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: "100%"
-  },
-  paper: {
-    width: "100%",
-    marginBottom: theme.spacing(2)
-  },
-  table: {
-    minWidth: 750
-  },
-  starButton: {
-    color: "blue"
-  }
-}));
+import CandidateTableHelpers from "./helpers/candidateTableHelpers";
 
 export const EnhancedTable = () => {
   const classes = useStyles();
@@ -121,25 +35,6 @@ export const EnhancedTable = () => {
     setCandidates(content);
   }, []);
 
-  const createData = ({
-    id,
-    real_name,
-    years_as_sw_dev,
-    favourite_language,
-    australian_citizen,
-    resume_base64
-  }) => {
-    const isAustralianCitizen = australian_citizen ? "yes" : "no";
-    return {
-      id,
-      real_name,
-      years_as_sw_dev,
-      favourite_language,
-      isAustralianCitizen,
-      resume_base64
-    };
-  };
-
   const starredCandidate = id => {
     if (starCandidate.includes(id)) {
       setStarCandidate(starCandidate.filter(e => e !== id));
@@ -149,7 +44,7 @@ export const EnhancedTable = () => {
   };
 
   const rows = candidates.map(candidate => {
-    return createData(candidate);
+    return CandidateTableHelpers.createData(candidate);
   });
 
   const handleRequestSort = (event, property) => {
@@ -161,7 +56,7 @@ export const EnhancedTable = () => {
   const createSortHandler = property => event => {
     handleRequestSort(event, property);
   };
-
+  console.log(starCandidate);
   return (
     <div className={classes.root}>
       <Paper>
@@ -169,7 +64,7 @@ export const EnhancedTable = () => {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                {headCells.map(headCell =>
+                {CandidateTableHelpers.headCells.map(headCell =>
                   headCell.sortable ? (
                     <TableCell
                       key={headCell.id}
@@ -189,7 +84,10 @@ export const EnhancedTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy)).map(row => {
+              {CandidateTableHelpers.stableSort(
+                rows,
+                CandidateTableHelpers.getComparator(order, orderBy)
+              ).map(row => {
                 return (
                   <TableRow hover tabIndex={-1} key={row.id}>
                     <TableCell>
