@@ -8,6 +8,7 @@ const CandidateTableHelpers = {
     }
     return 0;
   },
+
   getComparator: (order, orderBy) => {
     return order === "desc"
       ? (a, b) => CandidateTableHelpers.descendingComparator(a, b, orderBy)
@@ -20,6 +21,7 @@ const CandidateTableHelpers = {
       if (order !== 0) return order;
       return a[1] - b[1];
     });
+
     return stabilizedThis.map(el => el[0]);
   },
 

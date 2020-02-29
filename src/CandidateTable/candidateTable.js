@@ -19,11 +19,12 @@ const SHOW_RESUME = "Show Resume";
 export const EnhancedTable = () => {
   const classes = useStyles();
   const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("name");
+  const [orderBy, setOrderBy] = useState("real_name");
   const [candidates, setCandidates] = useState([]);
   const [selectedCandidate, setSelectedCandidate] = useState({});
   const [starCandidate, setStarCandidate] = useState([]);
   const [open, setOpen] = useState(false);
+  console.log("order", order);
 
   const handleOpen = row => {
     setSelectedCandidate(row);
@@ -81,7 +82,7 @@ export const EnhancedTable = () => {
                       </TableSortLabel>
                     </TableCell>
                   ) : (
-                    <TableCell>{headCell.label}</TableCell>
+                    <TableCell key={headCell.id}>{headCell.label}</TableCell>
                   )
                 )}
               </TableRow>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useStyles from "./cvModal.styles";
 import Modal from "@material-ui/core/Modal";
-import Avatar from "@material-ui/core/Avatar";
 import atob from "atob";
 import ReactMarkdown from "react-markdown";
 
